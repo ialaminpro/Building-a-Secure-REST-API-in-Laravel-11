@@ -230,9 +230,58 @@ class UpdateCourseRequest extends FormRequest
 }
 ```
 
+### Step 8: Structuring API Responses
+To ensure consistency in API responses, we can create a utility response class similar to the one discussed earlier. This allows us to standardize responses throughout the application.
+
+Create a class `ApiResponse.php` in the `app/Http/Helpers` directory:
+```bash
+namespace App\Http\Helpers;
+
+class ApiResponse
+{
+    public static function success($data, $status = 200)
+    {
+        return response()->json(['status' => 'success', 'data' => $data], $status);
+    }
+
+    public static function error($message, $status)
+    {
+        return response()->json(['status' => 'error', 'message' => $message], $status);
+    }
+}
+```
+Now, update the controller methods to use this `ApiResponse` class for standardized responses.
+
+### Step 8: Testing the API
+You can test your API endpoints using tools like Postman or cURL. Here's how you would test the registration endpoint:
+```bash
+curl --request POST \
+  --url http://localhost:8000/api/register \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password",
+    "password_confirmation": "password"
+}'
+```
+
+To log in and retrieve an access token, you can use the login endpoint:
+```bash
+curl --request POST \
+  --url http://localhost:8000/api/login \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "email": "john@example.com",
+    "password": "password"
+}'
+```
+
+
 ### Step 9: Create a Common API Response Class
 
 Create a response class to standardize API responses:
+
 
 ```bash
 php artisan make:class Classes/ApiResponse
